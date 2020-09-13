@@ -1,8 +1,40 @@
 body {
   background-color: black;
-  margin:0px;
+  margin:100px;
 }
 .FrequencyBandsApp {
+  .darkmode {
+    color:white;
+  }
+
+  section.description {
+    max-width:600px;
+
+  }
+
+  .source-code-link {
+    position:absolute;
+    bottom:0;
+    right:0;
+    z-index: 10;
+    display:block;
+    padding:10px;
+    svg {
+      vertical-align:middle;
+    }
+    a {
+      display:inline-block;
+      margin:3px;
+      opacity:0.5;
+      &:hover {
+        opacity:1;
+      }
+      &:visited, &:link, &:active {
+        color:black;
+        text-decoration:none;
+      }
+    }
+  }
 
   .analysePage {
     background-color: #333;

@@ -5,6 +5,7 @@ import {AudioDropZone} from './AudioDropZone';
 import {InteractiveAudioGraph, SVGPlot, SignalGraph, Ruler} from 'scrollable-graphs';
 // @ts-ignore
 import FrequencyBandWorker from 'worker-loader!../frequencyBandAnalysis.worker';
+import {GithubLink} from './GithubLink';
 
 import './FrequencyBandsApp.scss';
 
@@ -57,15 +58,23 @@ export const FrequencyBandsApp:FunctionComponent = props => {
   }
 
   if(page == 'drop')    
-    return <AudioDropZone onDrop={handleAudio} />
+    return <div className="FrequencyBandsApp"><AudioDropZone onDrop={handleAudio}>
+      <section className='description'>
+        <h1>audio-visualiser</h1>
+        <p>Use this app to explore the frequency content of an audio file. The frequency spectrum of sound is mapped onto the colour spectrum (i.e. the rainbow), with low frequency sound energy corresponding to low frequency colours and vice versa. 
+        </p>
+      </section>
+        </AudioDropZone><GithubLink/></div>
 
   else if(page == 'loading') {
-    return <div className="FrequencyBandsApp"><div className="analysePage">
+    return <div className="FrequencyBandsApp darkmode"><div className="analysePage">
       <h2>Analysing audio...</h2>
       <progress value={progress} max={1}>
         {Math.round(progress * 100)+'%'}
-      </progress>
-        </div></div>
+        </progress>
+          </div>
+            <GithubLink/>
+      </div>
 
   } else if (page == 'graph' && graphs && audio) {
     return <div className="FrequencyBandsApp">
@@ -81,6 +90,7 @@ export const FrequencyBandsApp:FunctionComponent = props => {
           <Ruler/>
         </SVGPlot>
         </InteractiveAudioGraph>
+        <GithubLink/>
       </div>
 
   } else

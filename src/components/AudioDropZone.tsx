@@ -6,18 +6,39 @@ import styled from 'styled-components';
 // @ts-ignore
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-const complaints = [
-  null,
-  "Please only drop one file at a time",
-  "File is not an audio file",
-  "Something went wrong reading the file", // aborted
-  "Unable to read file", // error
-  "There was a problem decoding the audio data",
-]
+const complaints = {
+  tooManyFiles: "Please only drop one file at a time",
+  badFileType: "File is not an audio file",
+  readAborted: "Something went wrong reading the file", // aborted
+  readErrored: "Unable to read file", // error
+  decodeError: "There was a problem decoding the audio data",
+  noAudioFile: "Could not find any audio file."
+}
 
 const Container = styled.div`
   border: 1px dashed;
   background-color:#eee;
+
+  position:absolute;
+  left: 0;
+  right: 0;
+  top:0;
+  bottom:0;
+
+  display: flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  p.instruction {
+    font-size: 25px;
+  }
+`
+
+const LoadingDiv = styled.div`
+  color: white;
+  background-color: #333;
+  font-weight: bold;
 
   position:absolute;
   left: 0;
@@ -35,6 +56,11 @@ const Container = styled.div`
   }
 `
 
+const ErrorMessage = styled.strong`
+  display: block;
+  color: red;
+`
+
 export interface DropZoneProps {
   onDrop: (audio:AudioBuffer) => void;
 }
@@ -44,19 +70,25 @@ export interface DropZoneProps {
  */
 export const AudioDropZone:FunctionComponent<DropZoneProps> = props => {
   const [page, setPage] = useState('drop');
-  const [complaint, setComplaint] = useState(null);
+  const [complaint, setComplaint] = useState(null as null|keyof typeof complaints);
 
-  const onDrop = useCallback( acceptedFiles => {
-    if(acceptedFiles.length > 1)
-      setComplaint(1);
+  const onDrop = useCallback( (acceptedFiles, ...args) => {
+    console.log('yey', acceptedFiles, args);
+    if(acceptedFiles.length == 0) {
+      setComplaint('noAudioFile');
+    }
+    if(acceptedFiles.length > 1) {
+      console.log('fuck');
+      setComplaint('tooManyFiles');
+    }
 
     else if(acceptedFiles.length == 1) {
       const [file] = acceptedFiles;
 
       const reader = new FileReader();
 
-      reader.onabort = () => setComplaint(3);
-      reader.onerror = () => setComplaint(4);
+      reader.onabort = () => setComplaint('readAborted');
+      reader.onerror = () => setComplaint('readErrored');
 
       reader.onload = () => {
         const arraybuffer = reader.result;
@@ -74,7 +106,7 @@ export const AudioDropZone:FunctionComponent<DropZoneProps> = props => {
           },
           error => {
             setPage('drop');
-            setComplaint(5);
+            setComplaint('decodeError');
           }
         );
       }
@@ -91,19 +123,22 @@ export const AudioDropZone:FunctionComponent<DropZoneProps> = props => {
   if(page == 'drop')
     return <Container {...getRootProps()}>
       <input {...getInputProps()} />
+      { props.children ? props.children : null }
       {
         isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p className="instruction">Drop the files here ...</p> :
+          <p className="instruction">Please drag & drop an audio file here, or click to select from your file system</p>
       }
       {
         complaint ? 
-          <p>{complaints[complaint]}</p> :
+          <ErrorMessage>{complaints[complaint]}</ErrorMessage> :
           null
       }
     </Container>
 
   else if(page == 'decoding') 
-    return <div>Decoding audio</div>
+    return <LoadingDiv>
+      <p>Decoding audio...</p>
+    </LoadingDiv>
   
 }
