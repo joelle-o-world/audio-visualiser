@@ -30,8 +30,8 @@ export const FrequencyBandsApp:FunctionComponent = props => {
   function handleWorkerMessage(e) {
     const message = e.data;
     if(message.event == 'done') {
+      e.target.terminate();
       setPage('graph');
-      console.log('graph data:', message.data);
       setGraphs(message.data);
 
     } else if(message.event == 'progress') {
@@ -46,7 +46,7 @@ export const FrequencyBandsApp:FunctionComponent = props => {
 
     const transferableAudio= {
       sampleRate: audiobuffer.sampleRate,
-      data: audiobuffer.getChannelData(0).buffer,
+      data: audiobuffer.getChannelData(0).slice().buffer,
     }
 
     worker.onmessage = handleWorkerMessage;
