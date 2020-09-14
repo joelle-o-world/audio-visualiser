@@ -1,5 +1,9 @@
 # Audio Analysis
 
-App for convenient analysis of audio files and signals.
+React app for visually rich analysis of audio files and signals.
 
-This app brings together the typescript signal processing tools from `joelyjoel/ts-dsp` with the graphing library `joelyjoel/scrollable-graphs`.
+See a [working demo](http://joel.forsale/audio-visualiser).
+
+## Dependencies
+
+This app brings together the typescript signal processing tools from [ts-dsp](https://github.com/joelyjoel/ts-dsp) with the graphing library [scrollable-graphs](https://github.com/joelyjoel/scrollable-graphs). 
