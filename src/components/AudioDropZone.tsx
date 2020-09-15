@@ -2,6 +2,9 @@ import * as React from 'react';
 import {FunctionComponent, useState, useCallback} from 'react';
 import {useDropzone} from 'react-dropzone';
 import styled from 'styled-components';
+import {keyframes} from 'styled-components';
+import {RiDragDropLine} from 'react-icons/ri';
+import {FaRegHandPointer} from 'react-icons/fa';
 
 // @ts-ignore
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -15,9 +18,21 @@ const complaints = {
   noAudioFile: "Could not find any audio file."
 }
 
+const Blinking = keyframes`
+  0% {
+    opacity:1;
+  }
+  90% {
+    opacity:1;
+  }
+  95% {
+    opacity: 0;
+  }
+`
+
+
 const Container = styled.div`
   border: 1px dashed;
-  background-color:#eee;
 
   position:absolute;
   left: 0;
@@ -32,6 +47,17 @@ const Container = styled.div`
 
   p.instruction {
     font-size: 25px;
+    margin-right:25px;
+    margin-left:25px;
+    text-align:center;
+    animation: ${Blinking} 8s linear infinite;
+    background-color:black;
+    color: white;
+    padding:3px;
+    svg {
+      vertical-align:middle;
+      margin:5px;
+    }
   }
 `
 
@@ -126,8 +152,8 @@ export const AudioDropZone:FunctionComponent<DropZoneProps> = props => {
       { props.children ? props.children : null }
       {
         isDragActive ?
-          <p className="instruction">Drop the files here ...</p> :
-          <p className="instruction">Please drag & drop an audio file here, or click to select from your file system</p>
+        <p className="instruction"><RiDragDropLine/>Drop the files here ...</p> :
+          <p className="instruction"><RiDragDropLine/>Please drag & drop an audio file into this window, or click <FaRegHandPointer/> anywhere to select from your file system</p>
       }
       {
         complaint ? 

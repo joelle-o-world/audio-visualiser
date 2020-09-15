@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: rgb(249, 233,233);
   margin:100px;
 }
 .FrequencyBandsApp {
@@ -7,9 +7,27 @@ body {
     color:white;
   }
 
-  section.description {
-    max-width:600px;
+  img.backdrop {
+    position:absolute;
+    top:0px;
+    left:0px;
+    right:0px;
+    width:100vw;
+    object-fit: fill;
+    z-index: -1;
+  }
 
+  section.description {
+    display:block;
+    max-width:600px;
+    background-color: rgba(249, 233,233, .65);
+    padding:15px;
+    h1 {
+      text-align:center;
+    }
+    p {
+      font-size: 20px;
+    }
   }
 
   .source-code-link {
