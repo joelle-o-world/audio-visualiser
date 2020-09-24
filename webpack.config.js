@@ -16,7 +16,7 @@ module.exports = {
 
   plugins: [
     new HTMLWebpackPlugin({
-      title: "Scrollable Graphs Demo",
+      title: "joelyjoel/audio-visualiser Demo",
     }),
   ],
 
