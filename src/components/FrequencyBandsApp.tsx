@@ -2,7 +2,7 @@ import * as React from 'react';
 import {FunctionComponent, useState, useMemo} from 'react';
 import {AudioDropZone} from './AudioDropZone';
 // @ts-ignore
-import {InteractiveAudioGraph, SVGPlot, SignalGraph, Ruler} from 'scrollable-graphs';
+import {AudioGraphView, SVGPlot, SignalGraph, Ruler} from 'scrollable-graphs';
 // @ts-ignore
 import FrequencyBandWorker from 'worker-loader!../frequencyBandAnalysis.worker';
 import {GithubLink} from './GithubLink';
@@ -88,7 +88,7 @@ export const FrequencyBandsApp:FunctionComponent = props => {
 
   } else if (page == 'graph' && graphs && audio) {
     return <div className="FrequencyBandsApp">
-      <InteractiveAudioGraph tMin={0} tMax={audio.duration} tLeft={0} tRight={audio.duration} audio={audio}>
+      <AudioGraphView interactive tMin={0} tMax={audio.duration} tLeft={0} tRight={audio.duration} audio={audio}>
         <SVGPlot>
           {graphs.map((graph, i) => <SignalGraph
             color={colors[i]} 
@@ -99,7 +99,7 @@ export const FrequencyBandsApp:FunctionComponent = props => {
           />)}
           <Ruler/>
         </SVGPlot>
-        </InteractiveAudioGraph>
+        </AudioGraphView>
         <TopTips>
           <li><AiOutlineZoomIn/> Scroll with your trackpad to zoom in/out and move left/right</li>
             <li><IoMdColorPalette/>The colours of the rainbow correspond to the different frequency bands.</li>

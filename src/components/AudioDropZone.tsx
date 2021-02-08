@@ -54,6 +54,7 @@ const Container = styled.div`
     background-color:black;
     color: white;
     padding:3px;
+    cursor: pointer;
     svg {
       vertical-align:middle;
       margin:5px;
